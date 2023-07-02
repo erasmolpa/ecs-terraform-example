@@ -9,5 +9,6 @@
 2. Searching in Terraform registry and googling for some examples with similar requirements that this challenge.
 3. Reading and trying to understand how to set up a VPC with all the requirements.
 4. Creating terraform backend state 
+5. Trying to create the VPC resources , terraform plan failed 
 
 
