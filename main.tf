@@ -1,4 +1,13 @@
+/**
+module "backend"{
+  source = "./modules/backend"
+}
+**/
 
 module "vpc" {
-  source = "./vpc_module"
+  source = "./modules/vpc"
+}
+
+module "fargate-cluster"{
+  source = "./modules/ecs_cluster"
 }

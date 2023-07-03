@@ -29,7 +29,6 @@ variable "tags" {
   type = map(any)
   default = {
     Environment = "dev"
-    Project     = "incode-challenge"
     Component   = "vpc"
   }
 }
