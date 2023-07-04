@@ -12,6 +12,14 @@ graph:
 fmt:
 	terraform fmt -recursive
 
+plan:
+	terraform plan
+
+apply:
+	terraform apply --auto-approve
+
+destroy:
+	terraform destroy --auto-approve
 # tools url:
 # https://github.com/shihanng/tfvar
 # https://github.com/terraform-docs/terraform-docs
