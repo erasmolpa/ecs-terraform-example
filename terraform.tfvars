@@ -31,3 +31,4 @@ alb = {
   load_balancer_type = "application"
   subnets            = module.vpc.vpc_public_subnets_ids
 }
+
