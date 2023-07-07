@@ -1,15 +1,17 @@
 // THIS https://aws.plainenglish.io/into-the-fargate-with-terraform-1a45ea51707d
-/**
+
 module "backend"{
   source = "./modules/backend"
   backend = {
-    bucket_name    = "backend"
+    bucket_name    = "terraform-backend-state-incode-demo"
     key            = "state/resource.tfstate"
     region         = "us-east-1"
     dynamodb_table = "resource-backend-lock"
   }
 }
-**/
+
+//Steps https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/tree/main
+
 
 module "vpc" {
   source = "./modules/vpc"

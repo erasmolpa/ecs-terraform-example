@@ -12,6 +12,9 @@ graph:
 fmt:
 	terraform fmt -recursive
 
+init:
+	terraform init
+
 plan:
 	terraform plan
 
@@ -28,7 +31,7 @@ docs:
 	terraform-docs .
 
 # source: https://www.infracost.io/docs/
-estimate:
+cost:
 	infracost breakdown --path .
 
 clean:
