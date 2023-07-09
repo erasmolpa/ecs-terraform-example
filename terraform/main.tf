@@ -1,7 +1,7 @@
 // THIS https://aws.plainenglish.io/into-the-fargate-with-terraform-1a45ea51707d
 
 module "backend"{
-  source = "./modules/backend"
+  source = "modules/backend"
   backend = {
     bucket_name    = "terraform-backend-state-incode-demo"
     key            = "state/resource.tfstate"
@@ -12,14 +12,14 @@ module "backend"{
 
 //Steps https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/tree/main
 module "iam-users"{
-  source = "./modules/iam-users"
+  source = "modules/iam-users"
 }
 
 module "vpc" {
-  source = "./modules/vpc"
+  source = "modules/vpc"
 }
 module "alb" {
-  source = "./modules/alb"
+  source = "modules/alb"
 
   aws_security_group_http = {
     name        = "http"
@@ -41,7 +41,7 @@ module "alb" {
 }
 
 module "fargate-cluster" {
-  source = "./modules/ecs_cluster"
+  source = "modules/ecs_cluster"
 }
 
 /**
