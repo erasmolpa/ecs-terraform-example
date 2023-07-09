@@ -66,11 +66,12 @@ module "ecs_application" {
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
   }
   // SEE https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/blob/main/terraform/task_definition.json.tpl
+  // Consider this as an example https://erik-ekberg.medium.com/terraform-ecs-fargate-example-1397d3ab7f02
   ecs_task = {
     family                   = "ecs-task-family"
     container_image_name     = "ghost"
     container_image          = "ghost:alpine"
-    container_image_port     = 2368
+    container_image_port     = 80
     cpu                      = 256
     memory                   = 512
     requires_compatibilities = ["FARGATE"]
