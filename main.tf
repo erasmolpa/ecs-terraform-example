@@ -11,7 +11,9 @@ module "backend"{
 }
 
 //Steps https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/tree/main
-
+module "iam-users"{
+  source = "./modules/iam-users"
+}
 
 module "vpc" {
   source = "./modules/vpc"
