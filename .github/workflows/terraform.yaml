@@ -8,11 +8,11 @@ on:
       tfpath:
         description: 'TF File Path'     
         required: false
-        default: 'aws_samples/create_ec2'
+        default: 'terraform'
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   tf_code_check:
