@@ -11,4 +11,7 @@
 4. Creating terraform backend state 
 5. Trying to create the VPC resources , terraform plan failed 
 
+#### Thursday, July 3, 2023
 
+1. Creating backend state 
+2. Still working in the VPC definition

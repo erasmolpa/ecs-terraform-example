@@ -12,6 +12,17 @@ graph:
 fmt:
 	terraform fmt -recursive
 
+init:
+	terraform init
+
+plan:
+	terraform plan
+
+apply:
+	terraform apply --auto-approve
+
+destroy:
+	terraform destroy --auto-approve
 # tools url:
 # https://github.com/shihanng/tfvar
 # https://github.com/terraform-docs/terraform-docs
@@ -20,7 +31,7 @@ docs:
 	terraform-docs .
 
 # source: https://www.infracost.io/docs/
-estimate:
+cost:
 	infracost breakdown --path .
 
 clean:
