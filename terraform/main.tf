@@ -70,27 +70,6 @@ module "ecs_application" {
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   }
 
-  ecs_app_dynamodb_role = {
-    policy_document = {
-      actions     = [
-        "dynamodb:CreateTable",
-        "dynamodb:UpdateTimeToLive",
-        "dynamodb:PutItem",
-        "dynamodb:DescribeTable",
-        "dynamodb:ListTables",
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:Scan",
-        "dynamodb:Query",
-        "dynamodb:UpdateItem",
-        "dynamodb:UpdateTable"
-      ]
-      effect      = "Allow"
-      resource = "*"
-    }
-    iam_role_name = "ecs_dynamodb_role"
-    iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskDynamodbPolicy"
-  }
   ecs_autoscale_role = {
     policy_document = {
       actions     = ["sts:AssumeRole"]
