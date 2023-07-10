@@ -48,7 +48,59 @@ module "alb" {
     subnets            = module.vpc.vpc_public_subnets_ids
   }
 }
+## --------------------------------------------------------------------------- ##
+## FIXME. Move this part into module##
 
+resource "aws_ecr_repository" "ecr_repository" {
+  name                 = "serverless-go-app"
+  image_tag_mutability = "MUTABLE"
+
+}
+
+resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
+  repository = aws_ecr_repository.ecr_repository.name
+
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "keep last 10 images"
+      action       = {
+        type = "expire"
+      }
+      selection     = {
+        tagStatus   = "any"
+        countType   = "imageCountMoreThan"
+        countNumber = 10
+      }
+    }]
+  })
+}
+
+/**https://earthly.dev/blog/deploy-dockcontainers-to-awsecs-using-terraform/
+resource "null_resource" "docker_packaging" {
+
+  provisioner "local-exec" {
+    command = <<EOF
+	    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com
+	    docker build -t "${aws_ecr_repository.ecr_repository.repository_url}:latest" -f ../serverless-go-app/Dockerfile .
+	    docker push "${aws_ecr_repository.ecr_repository.repository_url}:latest"
+	    EOF
+  }
+
+
+  triggers = {
+    "run_at" = timestamp()
+  }
+
+
+  depends_on = [
+    aws_ecr_repository.ecr_repository,
+  ]
+}
+
+**/
+
+## --------------------------------------------------------------------------- ##
 module "ecs_cluster" {
   source = "../terraform/modules/ecs_cluster"
   name    = "fargate-cluster"
@@ -84,8 +136,8 @@ module "ecs_application" {
   // Consider this as an example https://erik-ekberg.medium.com/terraform-ecs-fargate-example-1397d3ab7f02
   ecs_task = {
     family                   = "ecs-task-family"
-    container_image_name     = "nginx"
-    container_image          = "nginx:alpine"
+    container_image_name     = "serverless-go-app"
+    container_image          = "510330021658.dkr.ecr.us-east-1.amazonaws.com/serverless-go-app:latest"
     container_image_port     = 80
     cpu                      = 256
     memory                   = 512
