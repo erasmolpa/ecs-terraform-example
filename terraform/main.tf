@@ -12,13 +12,23 @@ module "backend"{
 module "iam_users"{
   source = "../terraform/modules/iam_users"
 }
-
 module "vpc" {
   source = "../terraform/modules/vpc"
+  vpc = {
+    name                 = "ecs-vpc"
+    cidr_block           = "10.0.0.0/16"
+    azs                  = ["us-east-1a", "us-east-1b", "us-east-1c"]
+    private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+    public_subnets       = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+    enable_ipv6          = false
+    enable_nat_gateway   = true
+    enable_vpn_gateway   = false
+    enable_dns_hostnames = true
+    enable_dns_support   = true
+  }
 }
 module "alb" {
   source = "../terraform/modules/alb"
-
   aws_security_group_http = {
     name        = "http"
     description = "HTTP traffic"
@@ -30,6 +40,7 @@ module "alb" {
     description = "Allow all outbound traffic"
     vpc_id      = module.vpc.vpc_id
   }
+
   alb = {
     name               = "alb-test"
     internal           = false
@@ -40,10 +51,14 @@ module "alb" {
 
 module "ecs_cluster" {
   source = "../terraform/modules/ecs_cluster"
+  name    = "fargate-cluster"
 }
 
 module "ecs_application" {
   source = "../terraform/modules/ecs_application"
+  vpc_id  = module.vpc.vpc_id
+  alb_arn = module.alb.aws_alb_arn
+
   ecs_task_execution_role = {
     policy_document = {
       actions     = ["sts:AssumeRole"]
@@ -55,6 +70,27 @@ module "ecs_application" {
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   }
 
+  ecs_app_dynamodb_role = {
+    policy_document = {
+      actions     = [
+        "dynamodb:CreateTable",
+        "dynamodb:UpdateTimeToLive",
+        "dynamodb:PutItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:ListTables",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:UpdateItem",
+        "dynamodb:UpdateTable"
+      ]
+      effect      = "Allow"
+      resource = "*"
+    }
+    iam_role_name = "ecs_dynamodb_role"
+    iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskDynamodbPolicy"
+  }
   ecs_autoscale_role = {
     policy_document = {
       actions     = ["sts:AssumeRole"]
@@ -69,8 +105,8 @@ module "ecs_application" {
   // Consider this as an example https://erik-ekberg.medium.com/terraform-ecs-fargate-example-1397d3ab7f02
   ecs_task = {
     family                   = "ecs-task-family"
-    container_image_name     = "ghost"
-    container_image          = "ghost:alpine"
+    container_image_name     = "nginx"
+    container_image          = "nginx:alpine"
     container_image_port     = 80
     cpu                      = 256
     memory                   = 512
@@ -86,13 +122,4 @@ module "ecs_application" {
     egress_all_id   = module.alb.aws_sg_egress_all_id
     private_subnets = module.vpc.vpc_private_subnets_ids
   }
-
-  vpc_id  = module.vpc.vpc_id
-  alb_arn = module.alb.aws_alb_arn
 }
-/**
-module "rds-postgres" {
-  source = "./modules/rds"
-  vpc_id = module.vpc.vpc_id
-}
-**/

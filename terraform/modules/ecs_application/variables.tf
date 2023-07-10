@@ -11,6 +11,18 @@ variable "ecs_task_execution_role" {
   })
 }
 
+variable "ecs_app_dynamodb_role" {
+  type = object({
+    policy_document = object({
+      actions = list(string)
+      effect = string
+      resource = string
+    })
+    iam_role_name = string
+    iam_policy_arn = string
+  })
+}
+
 variable "ecs_task" {
   type = object({
     family                   = string

@@ -14,6 +14,11 @@ module "ecs_task_execution_role" {
 
 resource "aws_ecs_task_definition" "ecs_task" {
   family                = var.ecs_task.family
+  cpu                   = var.ecs_task.cpu
+  memory              = var.ecs_task.memory
+  requires_compatibilities = var.ecs_task.requires_compatibilities
+  network_mode             = var.ecs_task.network_mode
+  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
   container_definitions = jsonencode([{
     name                = var.ecs_task.container_image_name
     image               = var.ecs_task.container_image
@@ -24,9 +29,6 @@ resource "aws_ecs_task_definition" "ecs_task" {
       containerPort     = var.ecs_task.container_image_port
     }]
   }])
-  requires_compatibilities = var.ecs_task.requires_compatibilities
-  network_mode             = var.ecs_task.network_mode
-  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
 
 resource "aws_ecs_service" "ecs_service" {
@@ -54,8 +56,8 @@ resource "aws_ecs_service" "ecs_service" {
   }
 }
 
-resource "aws_lb_target_group" "ghost_api" {
-  name        = "ghost-api"
+resource "aws_lb_target_group" "lb_tg_api" {
+  name        = "lb-tg-fiber-api"
   port        = var.ecs_task.container_image_port
   protocol    = "HTTP"
   target_type = "ip"
@@ -73,7 +75,7 @@ resource "aws_alb_listener" "http_listener" {
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ghost_api.arn
+    target_group_arn = aws_lb_target_group.lb_tg_api.arn
   }
 }
 
