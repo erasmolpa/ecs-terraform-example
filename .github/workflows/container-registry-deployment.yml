@@ -12,14 +12,19 @@ jobs:
       run:
         working-directory: terraform/modules/ecr
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+
+      - name: Checkout tf code in runner environment
+        uses: actions/checkout@v3.5.2
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.0
-
+        uses: hashicorp/setup-terraform@v2.0.2
       - name: Format Terraform code
         run: terraform fmt -check -recursive 
 
@@ -32,5 +37,5 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+#      - name: Terraform Apply
+#        run: terraform apply -auto-approve
