@@ -39,7 +39,7 @@ ecs_task_execution_role = {
     type        = "Service"
     identifiers = ["ecs-tasks.amazonaws.com"]
   }
-  iam_role_name = "task-execution-role"
+  iam_role_name  = "task-execution-role"
   iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
@@ -50,7 +50,7 @@ ecs_autoscale_role = {
     type        = "Service"
     identifiers = ["application-autoscaling.amazonaws.com"]
   }
-  iam_role_name = "ecs-scale-application"
+  iam_role_name  = "ecs-scale-application"
   iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
 }
 // SEE https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/blob/main/terraform/task_definition.json.tpl

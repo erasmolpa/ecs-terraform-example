@@ -1,12 +1,12 @@
 module "ecs_task_execution_role" {
   source = "../ecs_application_role"
   policy_document = {
-    actions = var.ecs_task_execution_role.policy_document.actions
-    effect = var.ecs_task_execution_role.policy_document.effect
-    type = var.ecs_task_execution_role.policy_document.type
+    actions     = var.ecs_task_execution_role.policy_document.actions
+    effect      = var.ecs_task_execution_role.policy_document.effect
+    type        = var.ecs_task_execution_role.policy_document.type
     identifiers = var.ecs_task_execution_role.policy_document.identifiers
   }
-  iam_role_name = var.ecs_task_execution_role.iam_role_name
+  iam_role_name  = var.ecs_task_execution_role.iam_role_name
   iam_policy_arn = var.ecs_task_execution_role.iam_policy_arn
 }
 ## --------------------------------------------------------------------------- ##
@@ -71,20 +71,20 @@ resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
 ## --------------------------------------------------------------------------- ##
 
 resource "aws_ecs_task_definition" "ecs_task" {
-  family                    = var.ecs_task.family
-  cpu                       = var.ecs_task.cpu
-  memory                    = var.ecs_task.memory
-  requires_compatibilities  = var.ecs_task.requires_compatibilities
-  network_mode              = var.ecs_task.network_mode
-  execution_role_arn        = module.ecs_task_execution_role.iam_role_arn
-  container_definitions     = jsonencode([{
-    name                = var.ecs_task.container_image_name
-    image               = var.ecs_task.container_image
-    cpu                 = var.ecs_task.cpu
-    memory              = var.ecs_task.memory
-    essential           = true
+  family                   = var.ecs_task.family
+  cpu                      = var.ecs_task.cpu
+  memory                   = var.ecs_task.memory
+  requires_compatibilities = var.ecs_task.requires_compatibilities
+  network_mode             = var.ecs_task.network_mode
+  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
+  container_definitions = jsonencode([{
+    name      = var.ecs_task.container_image_name
+    image     = var.ecs_task.container_image
+    cpu       = var.ecs_task.cpu
+    memory    = var.ecs_task.memory
+    essential = true
     portMappings = [{
-      containerPort     = var.ecs_task.container_image_port
+      containerPort = var.ecs_task.container_image_port
     }]
   }])
 }
@@ -155,12 +155,12 @@ resource "aws_security_group" "ingress_api" {
 module "ecs_autoscale_role" {
   source = "../ecs_application_role"
   policy_document = {
-    actions = var.ecs_autoscale_role.policy_document.actions
-    effect = var.ecs_autoscale_role.policy_document.effect
-    type = var.ecs_autoscale_role.policy_document.type
+    actions     = var.ecs_autoscale_role.policy_document.actions
+    effect      = var.ecs_autoscale_role.policy_document.effect
+    type        = var.ecs_autoscale_role.policy_document.type
     identifiers = var.ecs_autoscale_role.policy_document.identifiers
   }
-  iam_role_name = var.ecs_autoscale_role.iam_role_name
+  iam_role_name  = var.ecs_autoscale_role.iam_role_name
   iam_policy_arn = var.ecs_autoscale_role.iam_policy_arn
 }
 
