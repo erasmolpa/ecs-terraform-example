@@ -1,14 +1,3 @@
-
-module "backend"{
-  source = "../terraform/modules/backend"
-  backend = {
-    bucket_name    = "terraform-backend-state-incode-demo"
-    key            = "state/resource.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "resource-backend-lock"
-  }
-}
-
 module "iam_users"{
   source = "../terraform/modules/iam_users"
 }
@@ -48,59 +37,7 @@ module "alb" {
     subnets            = module.vpc.vpc_public_subnets_ids
   }
 }
-## --------------------------------------------------------------------------- ##
-## FIXME. Move this part into module##
 
-resource "aws_ecr_repository" "ecr_repository" {
-  name                 = "serverless-go-app"
-  image_tag_mutability = "MUTABLE"
-
-}
-
-resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
-  repository = aws_ecr_repository.ecr_repository.name
-
-  policy = jsonencode({
-    rules = [{
-      rulePriority = 1
-      description  = "keep last 10 images"
-      action       = {
-        type = "expire"
-      }
-      selection     = {
-        tagStatus   = "any"
-        countType   = "imageCountMoreThan"
-        countNumber = 10
-      }
-    }]
-  })
-}
-
-/**https://earthly.dev/blog/deploy-dockcontainers-to-awsecs-using-terraform/
-resource "null_resource" "docker_packaging" {
-
-  provisioner "local-exec" {
-    command = <<EOF
-	    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com
-	    docker build -t "${aws_ecr_repository.ecr_repository.repository_url}:latest" -f ../serverless-go-app/Dockerfile .
-	    docker push "${aws_ecr_repository.ecr_repository.repository_url}:latest"
-	    EOF
-  }
-
-
-  triggers = {
-    "run_at" = timestamp()
-  }
-
-
-  depends_on = [
-    aws_ecr_repository.ecr_repository,
-  ]
-}
-
-**/
-
-## --------------------------------------------------------------------------- ##
 module "ecs_cluster" {
   source = "../terraform/modules/ecs_cluster"
   name    = "fargate-cluster"
