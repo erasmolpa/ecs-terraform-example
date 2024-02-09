@@ -2,8 +2,6 @@ name: AWS Backend CI
 
 on:
   push:
-    paths:
-      - "terraform/modules/backend/*"
     branches:
       - '*'
 
