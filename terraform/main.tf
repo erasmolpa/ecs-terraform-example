@@ -1,5 +1,5 @@
 
-module "backend"{
+module "backend" {
   source = "../terraform/modules/backend"
   backend = {
     bucket_name    = "terraform-backend-state-incode-demo"
@@ -9,7 +9,7 @@ module "backend"{
   }
 }
 
-module "iam_users"{
+module "iam_users" {
   source = "../terraform/modules/iam_users"
 }
 module "vpc" {
@@ -64,10 +64,10 @@ resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
     rules = [{
       rulePriority = 1
       description  = "keep last 10 images"
-      action       = {
+      action = {
         type = "expire"
       }
-      selection     = {
+      selection = {
         tagStatus   = "any"
         countType   = "imageCountMoreThan"
         countNumber = 10
@@ -103,11 +103,11 @@ resource "null_resource" "docker_packaging" {
 ## --------------------------------------------------------------------------- ##
 module "ecs_cluster" {
   source = "../terraform/modules/ecs_cluster"
-  name    = "fargate-cluster"
+  name   = "fargate-cluster"
 }
 
 module "ecs_application" {
-  source = "../terraform/modules/ecs_application"
+  source  = "../terraform/modules/ecs_application"
   vpc_id  = module.vpc.vpc_id
   alb_arn = module.alb.aws_alb_arn
 
@@ -118,7 +118,7 @@ module "ecs_application" {
       type        = "Service"
       identifiers = ["ecs-tasks.amazonaws.com"]
     }
-    iam_role_name = "task-execution-role"
+    iam_role_name  = "task-execution-role"
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   }
 
@@ -129,7 +129,7 @@ module "ecs_application" {
       type        = "Service"
       identifiers = ["application-autoscaling.amazonaws.com"]
     }
-    iam_role_name = "ecs-scale-application"
+    iam_role_name  = "ecs-scale-application"
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
   }
   // SEE https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/blob/main/terraform/task_definition.json.tpl

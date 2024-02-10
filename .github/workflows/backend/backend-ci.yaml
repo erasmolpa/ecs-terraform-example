@@ -1,0 +1,35 @@
+name: AWS Backend CI
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build-terraform-plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "terraform/modules/backend/*"
+    steps:
+      - name: Checkout tf code in runner environment
+        uses: actions/checkout@v3.5.2
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Analyze Terraform code
+        run: terraform validate 
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan    

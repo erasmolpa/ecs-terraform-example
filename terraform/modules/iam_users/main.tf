@@ -3,7 +3,7 @@ module "iam-users" {
   version                 = "1.3.0"
   name                    = "iam-user"
   environment             = "test"
-  label_order             = ["name","environment"]
+  label_order             = ["name", "environment"]
   policy_enabled          = true
   policy                  = data.aws_iam_policy_document.default.json
   password_length         = 20
