@@ -8,9 +8,6 @@ on:
 jobs:
   build-terraform-plan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "terraform/modules/backend/*"
     steps:
       - name: Checkout tf code in runner environment
         uses: actions/checkout@v3.5.2
@@ -26,10 +23,13 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.2
 
       - name: Analyze Terraform code
-        run: terraform validate 
+        run: terraform validate
+        working-directory: ${{ github.event.inputs.tfpath }}
 
       - name: Terraform Init
         run: terraform init
-
+        working-directory: ${{ github.event.inputs.tfpath }}
+        
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
+        working-directory: ${{ github.event.inputs.tfpath }}
