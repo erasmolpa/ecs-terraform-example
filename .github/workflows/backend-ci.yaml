@@ -24,15 +24,15 @@ jobs:
 
       - name: Analyze Terraform code
         run: terraform validate
-        working-directory: ${{ github.event.inputs.tfpath }}
+        working-directory: ${{ github.event.inputs.tfpath }}/terraform/modules/backend
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ${{ github.event.inputs.tfpath }}
+        working-directory: ${{ github.event.inputs.tfpath }}/terraform/modules/backend
         
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
         env:
           TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
            dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256", prevent_destroy = false }'
-        working-directory: ${{ github.event.inputs.tfpath }}
+        working-directory: ${{ github.event.inputs.tfpath }}/terraform/modules/backend
