@@ -17,7 +17,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-1
+          aws-region: eu-west-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
@@ -32,4 +32,7 @@ jobs:
         
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
+        env:
+          TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
+           dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256", prevent_destroy = false }'
         working-directory: ${{ github.event.inputs.tfpath }}
