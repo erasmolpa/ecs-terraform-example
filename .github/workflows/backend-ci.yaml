@@ -22,17 +22,17 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
 
-      - name: Analyze Terraform code
-        run: terraform validate
-        working-directory: ./terraform/modules/backend
-
       - name: Terraform Init
         run: terraform init
+        working-directory: ./terraform/modules/backend
+
+      - name: Analyze Terraform code
+        run: terraform validate
         working-directory: ./terraform/modules/backend
         
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
         env:
           TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
-           dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256", prevent_destroy = false }'
+           dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256" }'
         working-directory: ./terraform/modules/backend
