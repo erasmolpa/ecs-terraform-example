@@ -4,7 +4,6 @@ variable "backend" {
     region               = string
     dynamodb_table       = string
     bucket_sse_algorithm = string
-    prevent_destroy      = bool
     versioning_configuration = optional(string, "Enabled")
   })
 }
