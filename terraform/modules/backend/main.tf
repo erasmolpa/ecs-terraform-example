@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "backend" {
   bucket = "${var.backend.bucket_name}-tf-learn"
   lifecycle {
-    prevent_destroy = var.backend.prevent_destroy
+    prevent_destroy = true
   }
 }
 
