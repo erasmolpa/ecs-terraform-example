@@ -16,19 +16,9 @@ import (
 func TestTerraformBackendExample(t *testing.T) {
 	t.Parallel()
 	godotenv.Load()
-
 	awsRegion := aws.GetRandomRegion(t, nil, nil)
 	uniqueId := random.UniqueId()
-
-	// Create an S3 bucket where we can store state
 	bucketName := fmt.Sprintf("test-terraform-backend-example-%s", strings.ToLower(uniqueId))
-	defer cleanupS3Bucket(t, awsRegion, bucketName)
-	aws.CreateS3Bucket(t, awsRegion, bucketName)
-
-	key := fmt.Sprintf("%s/terraform.tfstate", uniqueId)
-	// data := fmt.Sprintf("data-for-test-%s", uniqueId)
-
-	// Deploy the module, configuring it to use the S3 bucket as an S3 backend
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../terraform/modules/backend",
 		Vars: map[string]interface{}{
@@ -38,25 +28,15 @@ func TestTerraformBackendExample(t *testing.T) {
 				"dynamodb_table": "test",
 			},
 		},
-		BackendConfig: map[string]interface{}{
-			"bucket": bucketName,
-			"key":    key,
-			"region": awsRegion,
-		},
 	})
 
 	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
 
-	// Check a state file actually got stored and contains our data in it somewhere (since that data is used in an
-	// output of the Terraform code)
-	// contents := aws.GetS3ObjectContents(t, awsRegion, bucketName, key)
-	// require.Contains(t, contents, data)
-
-	// The module doesn't really *do* anything, so we just check a dummy output here and move on
 	dynamodb_table_name := terraform.OutputRequired(t, terraformOptions, "dynamodb_table_name")
-	// backend_bucket_arn := terraform.OutputRequired(t, terraformOptions, "backend_bucket_arn")
+	backend_bucket_name := terraform.OutputRequired(t, terraformOptions, "backend_bucket_name")
 	require.Equal(t, "test-lock", dynamodb_table_name)
+	require.Equal(t, fmt.Sprintf("%s-tf-learn", bucketName), backend_bucket_name)
 }
 
 func cleanupS3Bucket(t *testing.T, awsRegion string, bucketName string) {
