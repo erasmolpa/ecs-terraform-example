@@ -39,6 +39,9 @@ jobs:
   run-test:
     needs: "build-terraform-plan"
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_CQS }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
     steps:
     - uses: actions/checkout@v3
 
