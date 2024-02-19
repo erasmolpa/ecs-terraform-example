@@ -36,3 +36,21 @@ jobs:
           TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
            dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256" }'
         working-directory: ./terraform/modules/backend
+  run-test:
+    needs: "build-terraform-plan"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build
+      run: go build -v ./...
+      working-directory: ./test
+
+    - name: Test
+      run: go test -v ./backed_test.go
+      working-directory: ./test

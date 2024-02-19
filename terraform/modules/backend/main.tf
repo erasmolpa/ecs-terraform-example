@@ -2,11 +2,6 @@ resource "aws_s3_bucket" "backend" {
   bucket = "${var.backend.bucket_name}-tf-learn"
 }
 
-# resource "aws_s3_bucket_acl" "backend" {
-#   bucket = aws_s3_bucket.backend.id
-#   acl    = "private"
-# }
-
 resource "aws_s3_bucket_versioning" "backend" {
   bucket = aws_s3_bucket.backend.id
 

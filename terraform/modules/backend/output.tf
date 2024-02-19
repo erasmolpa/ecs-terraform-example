@@ -6,5 +6,11 @@ output "dynamodb_table_name" {
 output "backend_bucket_arn" {
   value       = aws_s3_bucket.backend.arn
   sensitive   = true
-  description = "name of the Dynamo lock table"
+  description = "ARN of the Bucket"
+}
+
+output "backend_bucket_name" {
+  value       = aws_s3_bucket.backend.id
+  sensitive   = true
+  description = "Name of the Bucket"
 }
