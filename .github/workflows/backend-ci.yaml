@@ -47,13 +47,9 @@ jobs:
       with:
         go-version: '1.20'
 
-    - name: Build
-      run: go build -v ./...
-      working-directory: ./test
-
     - name: Test
       run: go test -v ./backed_test.go
       working-directory: ./test
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_CQS }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_CQS }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
