@@ -22,17 +22,38 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
 
-      - name: Analyze Terraform code
-        run: terraform validate
-        working-directory: ${{ github.event.inputs.tfpath }}
-
       - name: Terraform Init
         run: terraform init
-        working-directory: ${{ github.event.inputs.tfpath }}
+        working-directory: ./terraform/modules/backend
+
+      - name: Analyze Terraform code
+        run: terraform validate
+        working-directory: ./terraform/modules/backend
         
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
         env:
           TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
-           dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256", prevent_destroy = false }'
-        working-directory: ${{ github.event.inputs.tfpath }}
+           dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256" }'
+        working-directory: ./terraform/modules/backend
+  run-test:
+    needs: "build-terraform-plan"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build
+      run: go build -v ./...
+      working-directory: ./test
+
+    - name: Test
+      run: go test -v ./backed_test.go
+      working-directory: ./test
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_CQS }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
