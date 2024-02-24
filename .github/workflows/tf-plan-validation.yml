@@ -1,16 +1,17 @@
 name: "TF steps validation before merge"
  
 on:
- push:
-   branches:
-   - '*'
-   paths:
-   - terraform/**
- pull_request:
-   branches:
-   - main
-   paths:
-   - terraform/**
+  workflow_dispatch:
+  push:
+    branches:
+    - '*'
+    paths:
+    - terraform/**
+  pull_request:
+    branches:
+    - main
+    paths:
+    - terraform/**
  
 env:
  # verbosity setting for Terraform logs

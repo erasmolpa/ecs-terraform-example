@@ -1,16 +1,17 @@
 name: "TF deployment"
  
 on:
- push:
-   branches:
-   - main
-   paths:
-   - terraform/**
- pull_request:
-   branches:
-   - main
-   paths:
-   - terraform/**
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    paths:
+    - terraform/**
+  pull_request:
+    branches:
+    - main
+    paths:
+    - terraform/**
  
 env:
  # verbosity setting for Terraform logs
