@@ -36,7 +36,7 @@ jobs:
           TF_VAR_backend: '{ bucket_name = "tf-backend-test", region = "eu-west-1",
            dynamodb_table = "tf-backend-test", bucket_sse_algorithm = "AES256" }'
         working-directory: ./terraform/modules/backend
-  run-test:
+  run-tf-backend-test:
     needs: "build-terraform-plan"
     runs-on: ubuntu-latest
     steps:
