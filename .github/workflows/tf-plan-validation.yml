@@ -1,9 +1,9 @@
-name: "demo"
+name: "TF steps validation before merge"
  
 on:
  push:
    branches:
-   - main
+   - '*'
    paths:
    - terraform/**
  pull_request:
