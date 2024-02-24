@@ -5,7 +5,13 @@ on:
     branches:
       - "*"
     paths:
-      - "./terraform/modules/rds"
+      - "terraform/modules/rds"
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - "main"
+    paths:
+      - "terraform/modules/rds"
 
 jobs:
   build-terraform-plan:
@@ -26,11 +32,11 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ./terraform/modules/rds
+        working-directory: terraform/modules/rds
 
       - name: Analyze Terraform code
         run: terraform validate
-        working-directory: ./terraform/modules/rds
+        working-directory: terraform/modules/rds
         
       - name: Terraform Plan
         run: terraform plan -out=tfplan    
@@ -41,4 +47,4 @@ jobs:
           TF_VAR_instance_class: db.t3.micro
           TF_VAR_username: ${{ secrets.rds_username }}
           TF_VAR_password: ${{ secrets.rds_password }}
-        working-directory: ./terraform/modules/rds
+        working-directory: terraform/modules/rds
