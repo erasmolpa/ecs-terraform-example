@@ -3,8 +3,17 @@ name: AWS Backend CI
 on:
   push:
     branches:
-      - '*'
-
+    - '*'
+    paths:
+    - terraform/backend/**
+    - terraform/modules/backend/**
+    - test/backend_test.go
+  pull_request:
+    branches:
+    - main
+    paths:
+    - terraform/backend/**
+    - terraform/modules/backend/**
 jobs:
   build-terraform-plan:
     runs-on: ubuntu-latest
