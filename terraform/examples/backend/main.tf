@@ -1,5 +1,5 @@
 module "backend" {
-  source = "../terraform/modules/backend"
+  source = "../../modules/backend"
   backend = {
     bucket_name    = "terraform-backend-state-incode-demo"
     key            = "state/resource.tfstate"
