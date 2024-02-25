@@ -1,7 +1,7 @@
 variable "profile" {
   description = "AWS Profile"
   type        = string
-  default     = "erasmo-sre-admin"
+  default     = "sre-admin"
 }
 
 variable "region" {
