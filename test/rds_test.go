@@ -18,8 +18,6 @@ func TestTerrafortmRdsCreation(t *testing.T) {
 	databaseName := fmt.Sprintf("terratestAwsRDSExample%s", strings.ToLower(random.UniqueId()))
 	username := "username"
 	password := "password"
-	// engineVersion := aws.GetValidEngineVersion(t, awsRegion, "mysql", "5.7")
-	// instanceType := aws.GetRecommendedRdsInstanceType(t, awsRegion, "mysql", engineVersion, []string{"db.t2.micro", "db.t3.micro"})
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../terraform/modules/rds",
