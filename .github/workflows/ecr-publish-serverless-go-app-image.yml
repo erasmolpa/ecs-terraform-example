@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - '*'
     paths:
-      - 'serverless-go-app/**'
-      - '!serverless-go-app/readme.md'
+      - 'serverless-go-app/Dockerfile'
+      - 'serverless-go-app/main.go'
 
 jobs:
   publish-serverless-go-app-image-into-ecr-registry-workflow:
