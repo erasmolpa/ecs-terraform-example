@@ -10,10 +10,10 @@ variable "rds_db_name" {
 variable "rds_engine" {
   type        = string
   description = "description"
-  # validation {
-  #   condition = contains(["postgres", "mysql", "aurora-postgresql","aurora-mysql"], var.rds_engine)
-  #   error_message = "The following rds_engine are allowed:  postgres,mysql,aurora-postgresql, aurora-mysql"
-  # }
+  validation {
+    condition = contains(["postgres", "mysql", "aurora-postgresql","aurora-mysql"], var.rds_engine)
+    error_message = "The following rds_engine are allowed:  postgres,mysql,aurora-postgresql, aurora-mysql"
+  }
 }
 
 variable "instance_class" {
