@@ -5,14 +5,14 @@ on:
     branches:
     - '*'
     paths:
-    - terraform/examples/backend.tf
+    - terraform/examples/backend/**
     - terraform/modules/backend/**
     - test/backend_test.go
   pull_request:
     branches:
     - main
     paths:
-    - terraform/examples/backend.tf
+    - terraform/examples/backend/**
     - terraform/modules/backend/**
 jobs:
   terraform-backend-ci-workflow:
