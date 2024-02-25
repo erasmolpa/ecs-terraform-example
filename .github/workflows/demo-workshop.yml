@@ -36,20 +36,24 @@ jobs:
      - name: Terraform init
        id: init
        run: terraform init 
+       working-directory: ./terraform
 
      - name: Terraform format
        id: fmt
        run: terraform fmt -check
-    
+       working-directory: ./terraform
+
      - name: Terraform validate
        id: validate
        run: terraform validate
+       working-directory: ./terraform
  
      - name: Terraform plan
        id: plan
        if: github.event_name == 'pull_request'
        run: terraform plan -no-color -input=false
        continue-on-error: true
+       working-directory: ./terraform
     
      - uses: actions/github-script@v6
        if: github.event_name == 'pull_request'
