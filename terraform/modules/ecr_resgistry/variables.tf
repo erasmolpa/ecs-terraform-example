@@ -1,13 +1,13 @@
 variable "repository_name" {
   description = "The name of the ECR repository"
   type        = string
-  default = "aws_repository_workshop"
+  default     = "aws_repository_workshop"
 }
 
 variable "image_tag_mutability" {
   description = "The mutability setting for the repository image tags"
   type        = string
-  default     = "IMMUTABLE" 
+  default     = "IMMUTABLE"
 }
 
 variable "lifecycle_policy_rules" {

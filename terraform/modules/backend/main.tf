@@ -6,7 +6,7 @@ resource "aws_s3_bucket_versioning" "backend" {
   bucket = aws_s3_bucket.backend.id
 
   versioning_configuration {
-    status = "${var.backend.versioning_configuration}"
+    status = var.backend.versioning_configuration
   }
 }
 
