@@ -50,7 +50,7 @@ module "alb" {
 }
 
 module "aws_ecr_repository" {
-  source = "../terraform/modules/ecr_registry"
+  source          = "../terraform/modules/ecr_registry"
   repository_name = "repository_workshop_serverless_app"
   lifecycle_policy_rules = [
     {
