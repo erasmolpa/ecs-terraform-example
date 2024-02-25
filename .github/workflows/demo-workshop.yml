@@ -15,8 +15,8 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  
 jobs:
- terraform-worflow:
-   name: "Terraform Infrastructure Change Management"
+  terraform-workshop-worflow:
+   name: "demo Workflow using all the modules for creating a workshop environment with all the components"
    runs-on: ubuntu-latest
 
    steps:

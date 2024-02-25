@@ -20,8 +20,8 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  
 jobs:
- terraform-worflow:
-   name: "Terraform Infrastructure Change Management"
+ terraform-ecr-ci-workflow:
+   name: "ECR CI. Terraform steps for validating the ECR Module"
    runs-on: ubuntu-latest
    defaults:
      run:

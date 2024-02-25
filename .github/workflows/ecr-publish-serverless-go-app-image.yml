@@ -1,6 +1,7 @@
 name: Deploy to ECR
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -9,7 +10,7 @@ on:
       - '!serverless-go-app/readme.md'
 
 jobs:
-  deploy:
+  publish-serverless-go-app-image-into-ecr-registry-workflow:
     runs-on: ubuntu-latest
 
     steps:

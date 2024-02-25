@@ -15,7 +15,7 @@ on:
     - terraform/backend/**
     - terraform/modules/backend/**
 jobs:
-  build-terraform-plan:
+  terraform-backend-ci-workflow:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout tf code in runner environment
