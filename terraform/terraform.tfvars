@@ -1,4 +1,4 @@
-# Valores para el módulo "vpc"
+
 vpc = {
   name                 = "ecs-vpc"
   cidr_block           = "10.0.0.0/16"
@@ -12,19 +12,16 @@ vpc = {
   enable_dns_support   = true
 }
 
-# Valores para el módulo "alb"
 alb = {
   name               = "alb-test"
   internal           = false
   load_balancer_type = "application"
 }
 
-# Valores para el módulo "ecs_cluster"
 ecs_cluster = {
   name = "fargate-cluster"
 }
 
-# Valores para el módulo "ecs_application"
 ecs_application = {
   ecs_task_execution_role = {
     iam_role_name  = "task-execution-role"
