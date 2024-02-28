@@ -9,27 +9,35 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
+
 variable "vpc" {
-  description = "Variables for VPC module"
-  type        = map
+  type = object({
+    name                 = string
+    cidr_block           = string
+    azs                  = list(string)
+    private_subnets      = list(string)
+    public_subnets       = list(string)
+    enable_ipv6          = bool
+    enable_nat_gateway   = bool
+    enable_vpn_gateway   = bool
+    enable_dns_hostnames = bool
+    enable_dns_support   = bool
+  })
 }
 
+
 variable "alb" {
-  description = "Variables for ALB module"
-  type        = map
-  default     = {
-    name               = "alb-test"
-    internal           = false
-    load_balancer_type = "application"
-  }
+  type = object({
+    name               = string
+    internal           = bool
+    load_balancer_type = string
+    subnets            = list(string)
+  })
 }
 
 variable "ecs_cluster" {
   description = "Variables for ECS cluster module"
   type        = map
-  default     = {
-    name = "fargate-cluster"
-  }
 }
 
 variable "ecs_application" {
@@ -43,6 +51,7 @@ variable "backend" {
 }
 
 variable "aws_ecr_repository" {
+
   description = "Variables for AWS ECR repository module"
   type        = map
 }

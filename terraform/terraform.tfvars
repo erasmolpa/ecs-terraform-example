@@ -1,3 +1,5 @@
+profile = "sre-admin"
+region  = "us-east-1"
 
 vpc = {
   name                 = "ecs-vpc"
@@ -6,7 +8,7 @@ vpc = {
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets       = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   enable_ipv6          = false
-  enable_nat_gateway   = true
+  enable_nat_gateway   = false
   enable_vpn_gateway   = false
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -17,6 +19,7 @@ alb = {
   internal           = false
   load_balancer_type = "application"
 }
+
 
 ecs_cluster = {
   name = "fargate-cluster"
@@ -51,14 +54,12 @@ ecs_application = {
   }
 }
 
-
 backend = {
   bucket_name    = "terraform-backend-state-incode-demo"
   key            = "state/resource.tfstate"
   region         = "us-east-1"
   dynamodb_table = "resource-backend-lock"
 }
-
 
 aws_ecr_repository = {
   repository_name = "repository_workshop_serverless_app"
@@ -74,4 +75,3 @@ aws_ecr_repository = {
     }
   ]
 }
-
