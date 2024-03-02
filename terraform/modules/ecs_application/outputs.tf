@@ -8,11 +8,6 @@ output "ecs_service_name" {
   value       = aws_ecs_service.ecs_service.name
 }
 
-output "ecs_service_arn" {
-  description = "ARN of the ECS service"
-  value       = aws_ecs_service.ecs_service.arn
-}
-
 output "ecs_task_execution_role_arn" {
   description = "ARN of the ECS task execution role"
   value       = module.ecs_task_execution_role.iam_role_arn

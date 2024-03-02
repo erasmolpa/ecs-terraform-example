@@ -66,7 +66,6 @@ module "ecs_application" {
   vpc_id     = module.vpc.vpc_id
   alb_arn    = module.alb.aws_alb_arn
   aws_region = var.region
-
   ecs_task_execution_role = {
     policy_document = {
       actions     = ["sts:AssumeRole"]
@@ -92,7 +91,7 @@ module "ecs_application" {
   ecs_task = {
     family                   = "ecs-task-family"
     container_image_name     = "serverless-go-app"
-    container_image          = "510330021658.dkr.ecr.us-east-1.amazonaws.com/serverless-go-app:latest"
+    container_image          = "${module.aws_ecr_repository.repository_url}:latest"
     container_image_port     = 80
     cpu                      = 256
     memory                   = 512
