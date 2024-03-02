@@ -108,5 +108,13 @@ module "ecs_application" {
     egress_all_id   = module.alb.aws_sg_egress_all_id
     private_subnets = module.vpc.vpc_private_subnets_ids
   }
+
+
+  cloudwatch_log_group_name    = "/ecs/my-app"
+  cloudwatch_metric_alarm_name = "ecs-app-cpu-utilization"
+  cloudwatch_alarm_actions     = ["arn:aws:sns:us-east-1:123456789012:my-alerts"]
+  cloudwatch_metric_alarm_cpu_utilization_threshold = 80
+  cloudwatch_metric_alarm_memory_utilization_threshold = 80
+  
   depends_on = [ module.alb,module.vpc,module.aws_ecr_repository ]
 }

@@ -55,3 +55,34 @@ variable "ecs_autoscale_role" {
     iam_policy_arn = string
   })
 }
+
+variable "cloudwatch_log_group_name" {
+  description = "Name of the CloudWatch Logs group for container logs"
+  type        = string
+  default     = "/ecs/my-app"
+}
+
+variable "cloudwatch_metric_alarm_name" {
+  description = "Name of the CloudWatch metric alarm"
+  type        = string
+  default     = "ecs-app-cpu-utilization"
+}
+
+variable "cloudwatch_alarm_actions" {
+  description = "List of ARNs of the actions to take when the alarm transitions to the ALARM state"
+  type        = list(string)
+}
+
+variable "cloudwatch_metric_alarm_cpu_utilization_threshold" {
+  description = "Threshold for CPU utilization in percentage for the CloudWatch metric alarm"
+  type        = number
+  default     = 80
+}
+
+variable "cloudwatch_metric_alarm_memory_utilization_threshold" {
+  description = "Threshold for memory utilization in percentage for the CloudWatch metric alarm"
+  type        = number
+  default     = 80
+}
+
+# Define otras variables relacionadas con CloudWatch según sea necesario
