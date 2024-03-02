@@ -1,3 +1,8 @@
+variable "aws_region" {
+  description = "AWS region where resources will be provisioned"
+  type        = string
+}
+
 variable "ecs_task_execution_role" {
   type = object({
     policy_document = object({
@@ -56,12 +61,6 @@ variable "ecs_autoscale_role" {
   })
 }
 
-variable "cloudwatch_log_group_name" {
-  description = "Name of the CloudWatch Logs group for container logs"
-  type        = string
-  default     = "/ecs/my-app"
-}
-
 variable "cloudwatch_metric_alarm_name" {
   description = "Name of the CloudWatch metric alarm"
   type        = string
@@ -85,4 +84,8 @@ variable "cloudwatch_metric_alarm_memory_utilization_threshold" {
   default     = 80
 }
 
-# Define otras variables relacionadas con CloudWatch según sea necesario
+variable "cloudwatch_log_group_name" {
+  description = "Name of the CloudWatch Logs group for container logs"
+  type        = string
+  default     = "/ecs/my-app"
+}

@@ -1,6 +1,6 @@
 # 1 Create remote state
 # 2 Create container registry
-# 3 Build adn publish app
+# 3 Build and publish app
 # ---------
 # 4 Create task application
 # 4.1 Create Need VPC
@@ -16,20 +16,20 @@
 
 # En el archivo main.tf
 module "backend" {
-  source   = "../terraform/modules/backend"
-  backend  = var.backend
+  source  = "../terraform/modules/backend"
+  backend = var.backend
 }
 
 module "aws_ecr_repository" {
-  source          = "../terraform/modules/ecr_registry"
-  repository_name = var.aws_ecr_repository
+  source                 = "../terraform/modules/ecr_registry"
+  repository_name        = var.aws_ecr_repository
   lifecycle_policy_rules = var.aws_ecr_repository_lifecycle_policy_rules
 }
 
 
 module "vpc" {
   source = "../terraform/modules/vpc"
-  vpc = var.vpc
+  vpc    = var.vpc
 }
 
 
@@ -53,7 +53,7 @@ module "alb" {
     load_balancer_type = "application"
     subnets            = module.vpc.vpc_public_subnets_ids
   }
-  depends_on = [ module.vpc ]
+  depends_on = [module.vpc]
 }
 
 module "ecs_cluster" {
@@ -62,9 +62,10 @@ module "ecs_cluster" {
 }
 
 module "ecs_application" {
-  source  = "../terraform/modules/ecs_application"
-  vpc_id  = module.vpc.vpc_id
-  alb_arn = module.alb.aws_alb_arn
+  source     = "../terraform/modules/ecs_application"
+  vpc_id     = module.vpc.vpc_id
+  alb_arn    = module.alb.aws_alb_arn
+  aws_region = var.region
 
   ecs_task_execution_role = {
     policy_document = {
@@ -87,8 +88,7 @@ module "ecs_application" {
     iam_role_name  = "ecs-scale-application"
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
   }
-  // SEE https://github.com/jvk243/terraform-aws-ecs-postgres-docker-flask-example/blob/main/terraform/task_definition.json.tpl
-  // Consider this as an example https://erik-ekberg.medium.com/terraform-ecs-fargate-example-1397d3ab7f02
+
   ecs_task = {
     family                   = "ecs-task-family"
     container_image_name     = "serverless-go-app"
@@ -98,6 +98,14 @@ module "ecs_application" {
     memory                   = 512
     requires_compatibilities = ["FARGATE"]
     network_mode             = "awsvpc"
+    log_configuration = {
+      log_driver = "awslogs"
+      options = {
+        "awslogs-group"         = var.cloudwatch_log_group_name
+        "awslogs-region"        = var.region
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
   }
 
   ecs_service = {
@@ -109,12 +117,11 @@ module "ecs_application" {
     private_subnets = module.vpc.vpc_private_subnets_ids
   }
 
-
-  cloudwatch_log_group_name    = "/ecs/my-app"
-  cloudwatch_metric_alarm_name = "ecs-app-cpu-utilization"
-  cloudwatch_alarm_actions     = ["arn:aws:sns:us-east-1:123456789012:my-alerts"]
-  cloudwatch_metric_alarm_cpu_utilization_threshold = 80
+  cloudwatch_log_group_name                            = "/ecs/my-app"
+  cloudwatch_metric_alarm_name                         = "ecs-app-cpu-utilization"
+  cloudwatch_alarm_actions                             = ["arn:aws:sns:us-east-1:123456789012:my-alerts"]
+  cloudwatch_metric_alarm_cpu_utilization_threshold    = 80
   cloudwatch_metric_alarm_memory_utilization_threshold = 80
-  
-  depends_on = [ module.alb,module.vpc,module.aws_ecr_repository ]
+
+  depends_on = [module.alb, module.vpc, module.aws_ecr_repository]
 }

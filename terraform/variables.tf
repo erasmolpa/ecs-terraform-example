@@ -13,7 +13,7 @@ variable "region" {
 
 variable "backend" {
   description = "Variables for backend module"
-  type        = map
+  type        = map(any)
 }
 variable "aws_ecr_repository" {
   description = "The name of the ECR repository"
@@ -71,5 +71,11 @@ variable "alb" {
 
 variable "ecs_cluster" {
   description = "Variables for ECS cluster module"
-  type        = map
+  type        = map(any)
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "Name of the CloudWatch Logs group for container logs"
+  type        = string
+  default     = "/ecs/my-app"
 }

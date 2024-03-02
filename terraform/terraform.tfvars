@@ -43,5 +43,5 @@ alb = {
   name               = "alb-test"
   internal           = false
   load_balancer_type = "application"
-  subnets            = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"] 
+  subnets            = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
