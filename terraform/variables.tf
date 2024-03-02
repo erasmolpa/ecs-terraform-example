@@ -10,6 +10,40 @@ variable "region" {
   default     = "us-east-1"
 }
 
+
+variable "backend" {
+  description = "Variables for backend module"
+  type        = map
+}
+variable "aws_ecr_repository" {
+  description = "The name of the ECR repository"
+  type        = string
+  default     = "aws_repository_workshop"
+}
+
+variable "aws_ecr_repository_lifecycle_policy_rules" {
+  description = "List of lifecycle policy rules for the repository"
+  type = list(object({
+    rule_priority         = number
+    description           = string
+    tag_prefix_list       = list(string)
+    count_type            = string
+    count_number          = number
+    action_type           = string
+    action_type_parameter = string
+  }))
+  default = [
+    {
+      rule_priority         = 1
+      description           = "keep last 10 images"
+      tag_prefix_list       = []
+      count_type            = "imageCountMoreThan"
+      count_number          = 10
+      action_type           = "expire"
+      action_type_parameter = ""
+    }
+  ]
+}
 variable "vpc" {
   type = object({
     name                 = string
@@ -37,21 +71,5 @@ variable "alb" {
 
 variable "ecs_cluster" {
   description = "Variables for ECS cluster module"
-  type        = map
-}
-
-variable "ecs_application" {
-  description = "Variables for ECS application module"
-  type        = map
-}
-
-variable "backend" {
-  description = "Variables for backend module"
-  type        = map
-}
-
-variable "aws_ecr_repository" {
-
-  description = "Variables for AWS ECR repository module"
   type        = map
 }
