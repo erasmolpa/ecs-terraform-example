@@ -43,4 +43,3 @@ resource "aws_alb" "application_load_balancer" {
     aws_security_group.egress_all.id,
   ]
 }
-
