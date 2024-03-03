@@ -46,28 +46,22 @@ jobs:
        working-directory: terraform
 
      - name: Terraform init
-       id: init
        run: terraform init -backend-config="backend.hcl"
        working-directory: ./terraform
 
      - name: Terraform format
-       id: fmt
        run: terraform fmt -check
        working-directory: ./terraform
 
      - name: Terraform validate
-       id: validate
        run: terraform validate
        working-directory: ./terraform
  
      - name: Terraform plan
-       id: plan
-       if: github.event_name == 'pull_request'
        run: terraform plan -var-file=terraform.tfvars -no-color -input=false
        continue-on-error: true
        working-directory: ./terraform
 
      - name: Terraform apply
-       id: apply
        run: terraform apply -var-file=terraform.tfvars -auto-approve
        working-directory: ./terraform
