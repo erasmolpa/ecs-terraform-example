@@ -1,4 +1,4 @@
-profile = "cqs-sre"
+profile = "sre-admin"
 region  = "eu-west-1"
 
 backend = {
@@ -47,3 +47,11 @@ alb = {
   load_balancer_type = "application"
   subnets            = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
+
+rds_storage =         10
+rds_db_name =         "dbexample"
+rds_engine =          "mysql"
+instance_class =      "db.t2.micro"
+username =            ""
+password =            ""
+skip_final_snapshot = true
