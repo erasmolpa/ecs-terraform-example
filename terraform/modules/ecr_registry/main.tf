@@ -6,8 +6,22 @@ resource "aws_ecr_repository" "ecr_repository" {
 
 resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
   repository = aws_ecr_repository.ecr_repository.name
-
-  policy = jsonencode(var.lifecycle_policy_rules)
+  for_each = { for idx, policy in var.lifecycle_policy_rules : idx => policy }
+  policy = jsonencode({
+    "rules" = [{
+      "rulePriority" = each.value.rulePriority
+      "description"  = each.value.description
+      "selection" = {
+        "tagStatus"     = each.value.selection.tagStatus
+        "tagPrefixList" = each.value.selection.tagPrefixList
+        "countType"     = each.value.selection.countType
+        "countNumber"   = each.value.selection.countNumber
+      }
+      "action" = {
+        "type" = each.value.action.type
+      }
+    }]
+  })
 }
 
 /**https://earthly.dev/blog/deploy-dockcontainers-to-awsecs-using-terraform/
