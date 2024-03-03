@@ -26,10 +26,10 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     rulePriority = number
     description  = string
     selection = object({
-      tagStatus     = string
+      tagStatus = string
       # tagPrefixList = list(string)
-      countType     = string
-      countNumber   = number
+      countType   = string
+      countNumber = number
     })
     action = object({
       type = string
@@ -40,7 +40,7 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     action = {
       type = "expire"
     }
-    description = "example"
+    description  = "example"
     rulePriority = 1
     selection = {
       countNumber = 10
@@ -87,6 +87,6 @@ variable "cloudwatch_log_group_name" {
 }
 
 variable "ecs_task_environmentFiles" {
-  type = list(string)
-  default = [ "app.env" ]
+  type    = list(string)
+  default = ["app.env"]
 }

@@ -11,18 +11,18 @@ backend = {
 aws_ecr_repository = "repository-docker"
 
 aws_ecr_repository_lifecycle_policy_rules = [{
-    action = {
-      type = "expire"
-    }
-    description = "Retain at least 3 images and images younger than 180 days"
-    rulePriority = 1
-    selection = {
-      countNumber = 10
-      # tagPrefixList = []
-      tagStatus = "any"
-      countType = "imageCountMoreThan"
-    }
-  }]
+  action = {
+    type = "expire"
+  }
+  description  = "Retain at least 3 images and images younger than 180 days"
+  rulePriority = 1
+  selection = {
+    countNumber = 10
+    # tagPrefixList = []
+    tagStatus = "any"
+    countType = "imageCountMoreThan"
+  }
+}]
 
 vpc = {
   name                 = "ecs-vpc"
