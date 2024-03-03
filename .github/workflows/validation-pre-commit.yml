@@ -22,3 +22,8 @@ jobs:
 
       - name: Run pre-commit 
         run: pre-commit run --all-files
+
+      - name: Confirmar cambios del hook end-of-file-fixer
+        run: |
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Fix end of files"
