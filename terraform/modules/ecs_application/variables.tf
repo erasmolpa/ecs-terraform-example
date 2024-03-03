@@ -5,8 +5,8 @@ variable "aws_region" {
 
 variable "name" {
   description = "base name used as prefix for naming"
-  default = "golang-api"
-  type = string
+  default     = "golang-api"
+  type        = string
 }
 variable "ecs_task_execution_role" {
   type = object({
