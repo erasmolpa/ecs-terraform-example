@@ -9,7 +9,7 @@ func TestEcrIsCreatedWithDefaultValues(t *testing.T){
 	t.Parallel()
 	repositoryName := "test_ecr_repo"
     terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: "../terraform/modules/ecr_resgistry",
+		TerraformDir: "../terraform/modules/ecr_registry",
 		Vars: map[string]interface{}{
 			"repository_name": repositoryName,
 		},
