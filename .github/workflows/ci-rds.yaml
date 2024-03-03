@@ -1,6 +1,7 @@
 name: CI RDS Module
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "*"

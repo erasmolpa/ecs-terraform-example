@@ -1,6 +1,7 @@
 name: CI Backend Module
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - '*'

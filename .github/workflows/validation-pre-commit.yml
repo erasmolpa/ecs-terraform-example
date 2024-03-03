@@ -1,6 +1,7 @@
 name: Validation. Pre-commit
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '*'
