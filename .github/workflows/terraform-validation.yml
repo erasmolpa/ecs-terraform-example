@@ -1,18 +1,13 @@
-name: "ECR TF validation Before merge"
+name: "demo workshop Validation"
  
 on:
   workflow_dispatch:
   push:
     branches:
     - '*'
-    paths:
-    - terraform/modules/ecr/**
-    - test/ecr_test.go
   pull_request:
     branches:
     - main
-    paths:
-    - terraform/modules/ecr/**
 env:
 
  TF_LOG: INFO
@@ -20,15 +15,10 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  
 jobs:
- terraform-ecr-ci-workflow:
-   name: "ECR CI. Terraform steps for validating the ECR Module"
+  terraform-workshop-worflow:
+   name: "demo Workflow using all the modules for creating a workshop environment with all the components"
    runs-on: ubuntu-latest
-   defaults:
-     run:
-       shell: bash
-       # We keep Terraform files in the terraform directory.
-       working-directory: ./terraform
- 
+
    steps:
      - name: Checkout the repository to the runner
        uses: actions/checkout@v2
@@ -46,20 +36,24 @@ jobs:
      - name: Terraform init
        id: init
        run: terraform init 
+       working-directory: ./terraform
 
      - name: Terraform format
        id: fmt
        run: terraform fmt -check
-    
+       working-directory: ./terraform
+
      - name: Terraform validate
        id: validate
        run: terraform validate
+       working-directory: ./terraform
  
      - name: Terraform plan
        id: plan
        if: github.event_name == 'pull_request'
        run: terraform plan -no-color -input=false
        continue-on-error: true
+       working-directory: ./terraform
     
      - uses: actions/github-script@v6
        if: github.event_name == 'pull_request'
@@ -91,12 +85,3 @@ jobs:
      - name: Terraform Plan Status
        if: steps.plan.outcome == 'failure'
        run: exit 1
-    
-     - name: Set up Go
-       uses: actions/setup-go@v4
-       with:
-         go-version: '1.20'
- 
-     - name: Test
-       run: go test -v ./ecr_test.go
-       working-directory: ./test
