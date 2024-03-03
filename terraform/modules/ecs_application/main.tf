@@ -11,9 +11,7 @@ module "ecs_task_execution_role" {
 }
 ## --------------------------------------------------------------------------- ##
 ## FIXME. THis Role should be created following the same approach as the rest of the roles ##
-variable "name" {
-  default = "golang-api"
-}
+
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.name}-ecsTaskRole"
 

@@ -3,6 +3,11 @@ variable "aws_region" {
   type        = string
 }
 
+variable "name" {
+  description = "base name used as prefix for naming"
+  default     = "golang-api"
+  type        = string
+}
 variable "ecs_task_execution_role" {
   type = object({
     policy_document = object({

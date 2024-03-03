@@ -1,3 +1,4 @@
+# SEE https://github.com/terraform-aws-modules/terraform-aws-security-group/tree/master/modules/http-80
 resource "aws_security_group" "http" {
   name        = var.aws_security_group_http.name
   description = var.aws_security_group_http.description
