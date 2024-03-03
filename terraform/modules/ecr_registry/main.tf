@@ -9,11 +9,10 @@ resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
   for_each = { for idx, policy in var.lifecycle_policy_rules : idx => policy }
   policy = jsonencode({
     "rules" = [{
-      "rulePriority" = each.value.rulePriority
+      "rulePriority" = 1
       "description"  = each.value.description
       "selection" = {
         "tagStatus"     = each.value.selection.tagStatus
-        "tagPrefixList" = each.value.selection.tagPrefixList
         "countType"     = each.value.selection.countType
         "countNumber"   = each.value.selection.countNumber
       }

@@ -87,7 +87,8 @@ module "ecs_application" {
         "awslogs-region"        = var.region
         "awslogs-stream-prefix" = "ecs"
       }
-    }
+    },
+    environmentFiles = var.ecs_task_environmentFiles
   }
 
   ecs_service = {
@@ -101,7 +102,7 @@ module "ecs_application" {
 
   cloudwatch_log_group_name                            = "/ecs/my-app"
   cloudwatch_metric_alarm_name                         = "ecs-app-cpu-utilization"
-  cloudwatch_alarm_actions                             = ["arn:aws:sns:us-east-1:123456789012:my-alerts"]
+  cloudwatch_alarm_actions                             = ["arn:aws:sns:eu-west-1:123456789012:my-alerts"]
   cloudwatch_metric_alarm_cpu_utilization_threshold    = 80
   cloudwatch_metric_alarm_memory_utilization_threshold = 80
 

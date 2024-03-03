@@ -16,7 +16,7 @@ variable "lifecycle_policy_rules" {
     description  = string
     selection = object({
       tagStatus     = string
-      tagPrefixList = list(string)
+      # tagPrefixList = list(string)
       countType     = string
       countNumber   = number
     })
@@ -33,9 +33,9 @@ variable "lifecycle_policy_rules" {
     rulePriority = 1
     selection = {
       countNumber = 10
-      tagPrefixList = []
+      # tagPrefixList = []
       tagStatus = "untagged"
       countType = "imageCountMoreThan"
     }
-  } ]
+  }]
 }

@@ -7,7 +7,7 @@ variable "profile" {
 variable "region" {
   description = "Region for AWS resources"
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-1"
 }
 
 
@@ -22,13 +22,12 @@ variable "aws_ecr_repository" {
 }
 
 variable "aws_ecr_repository_lifecycle_policy_rules" {
-  description = "List of lifecycle policy rules for the repository"
   type = list(object({
     rulePriority = number
     description  = string
     selection = object({
       tagStatus     = string
-      tagPrefixList = list(string)
+      # tagPrefixList = list(string)
       countType     = string
       countNumber   = number
     })
@@ -36,6 +35,7 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
       type = string
     })
   }))
+  description = "List of ECR lifecycle policies"
   default = [{
     action = {
       type = "expire"
@@ -44,11 +44,11 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     rulePriority = 1
     selection = {
       countNumber = 10
-      tagPrefixList = []
+      # tagPrefixList = []
       tagStatus = "untagged"
       countType = "imageCountMoreThan"
     }
-  } ]
+  }]
 }
 variable "vpc" {
   type = object({
@@ -84,4 +84,9 @@ variable "cloudwatch_log_group_name" {
   description = "Name of the CloudWatch Logs group for container logs"
   type        = string
   default     = "/ecs/my-app"
+}
+
+variable "ecs_task_environmentFiles" {
+  type = list(string)
+  default = [ "app.env" ]
 }
