@@ -1,0 +1,30 @@
+name: Validation. Pre-commit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  validation-pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v2
+
+      - name: Configurar Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit 
+        run: pre-commit run --all-files
+
+      - name: Confirmar cambios del hook end-of-file-fixer
+        run: |
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Fix end of files"

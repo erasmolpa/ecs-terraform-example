@@ -1,0 +1,51 @@
+name: CI RDS Module
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "*"
+    paths:
+      - "terraform/modules/rds"
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - "main"
+    paths:
+      - "terraform/modules/rds"
+
+jobs:
+  build-terraform-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tf code in runner environment
+        uses: actions/checkout@v3.5.2
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CQS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform/modules/rds
+
+      - name: Analyze Terraform code
+        run: terraform validate
+        working-directory: terraform/modules/rds
+        
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan    
+        env:
+          TF_VAR_rds_storage: 10
+          TF_VAR_db_name: 'ecs_challege_rds'
+          TF_VAR_rds_engine: 'aurora-mysql'
+          TF_VAR_instance_class: db.t3.micro
+          TF_VAR_username: ${{ secrets.rds_username }}
+          TF_VAR_password: ${{ secrets.rds_password }}
+        working-directory: terraform/modules/rds

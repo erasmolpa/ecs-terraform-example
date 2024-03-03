@@ -70,6 +70,7 @@ resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
 }
 ## --------------------------------------------------------------------------- ##
 
+
 resource "aws_ecs_task_definition" "ecs_task" {
   family                   = var.ecs_task.family
   cpu                      = var.ecs_task.cpu
@@ -85,10 +86,17 @@ resource "aws_ecs_task_definition" "ecs_task" {
     essential = true
     portMappings = [{
       containerPort = var.ecs_task.container_image_port
-    }]
+    }],
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = var.cloudwatch_log_group_name
+        "awslogs-region"        = var.aws_region
+        "awslogs-stream-prefix" = var.ecs_task.container_image_name
+      }
+    }
   }])
 }
-
 resource "aws_ecs_service" "ecs_service" {
   name            = var.ecs_service.name
   cluster         = var.ecs_service.cluster
@@ -203,4 +211,34 @@ resource "aws_appautoscaling_policy" "appautoscaling_policy_memory" {
     }
     target_value = 80
   }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_utilization_alarm" {
+  alarm_name          = var.cloudwatch_metric_alarm_name
+  alarm_description   = "Alarm for high CPU utilization in ECS"
+  namespace           = "AWS/ECS"
+  metric_name         = "CPUUtilization"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = var.cloudwatch_metric_alarm_cpu_utilization_threshold
+  evaluation_periods  = 1
+  period              = 60
+  statistic           = "Average"
+  alarm_actions       = var.cloudwatch_alarm_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_utilization_alarm" {
+  alarm_name          = "ecs-memory-utilization-alarm"
+  alarm_description   = "Alarm for high memory utilization in ECS"
+  namespace           = "AWS/ECS"
+  metric_name         = "MemoryUtilization"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = var.cloudwatch_metric_alarm_memory_utilization_threshold
+  evaluation_periods  = 1
+  period              = 60
+  statistic           = "Average"
+  alarm_actions       = var.cloudwatch_alarm_actions
+}
+
+resource "aws_cloudwatch_log_group" "ecs_container_logs" {
+  name = var.cloudwatch_log_group_name
 }

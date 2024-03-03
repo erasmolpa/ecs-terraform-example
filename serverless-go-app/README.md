@@ -96,6 +96,7 @@ docker tag app:latest public.ecr.aws/c0r3n4u9/app:latestdocker run -p 8888:80 ap
 
 * Run the following command to push this image to your newly created AWS repository:
 
+
 ```bash
 docker push public.ecr.aws/c0r3n4u9/serverless-go-app:latest
 ```
