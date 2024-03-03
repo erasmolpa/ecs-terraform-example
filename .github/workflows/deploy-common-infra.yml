@@ -1,4 +1,4 @@
-name: "Common infra deployment"
+name: Deploy Common Infra
  
 on:
   push:

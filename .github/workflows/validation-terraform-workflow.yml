@@ -1,4 +1,4 @@
-name: "Terraform init -> plan Validation"
+name: Validation Terraform init -> plan 
  
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  
 jobs:
-  terraform-workshop-worflow:
+  validation-terraform-worflow:
    name: "demo Workflow using all the modules for creating a workshop environment with all the components"
    runs-on: ubuntu-latest
 

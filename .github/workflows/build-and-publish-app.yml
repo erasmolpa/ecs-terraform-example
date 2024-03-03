@@ -1,4 +1,4 @@
-name: Deploy to ECR
+name: Build an d Publish APP to ECR
 
 on:
   workflow_dispatch:

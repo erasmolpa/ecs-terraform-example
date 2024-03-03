@@ -1,4 +1,4 @@
-name: RDS Module CI
+name: CI RDS Module
 
 on:
   push:
