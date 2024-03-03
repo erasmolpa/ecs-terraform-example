@@ -1,4 +1,4 @@
-name: "demo workshop Validation"
+name: "Terraform init -> plan Validation"
  
 on:
   workflow_dispatch:
