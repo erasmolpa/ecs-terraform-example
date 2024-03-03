@@ -1,11 +1,11 @@
-name: tfsec
+name:  validation tfsec
 on:
   push:
     branches:
       - main
   pull_request:
 jobs:
-  tfsec:
+  validation-tfsec:
     name: tfsec
     runs-on: ubuntu-latest
 

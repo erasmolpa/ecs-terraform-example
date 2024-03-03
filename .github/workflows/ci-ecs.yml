@@ -1,4 +1,4 @@
-name: CI ECR Module
+name: CI ECS Module
  
 on:
   workflow_dispatch:
@@ -6,13 +6,13 @@ on:
     branches:
     - '*'
     paths:
-    - terraform/modules/ecr_registry/**
-    - test/ecr_test.go
+    - terraform/modules/ecs_application/**
+    - test/ecs_test.go
   pull_request:
     branches:
     - main
     paths:
-    - terraform/modules/ecr_registry/**
+    - terraform/modules/ecs_application/**
 env:
 
  TF_LOG: INFO
@@ -20,13 +20,12 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  
 jobs:
- terraform-ecr-ci-workflow:
-   name: "ECR CI. Terraform steps for validating the ECR Module"
+ terraform-ecs-ci-workflow:
+   name: "ECS CI. Terraform steps for validating the ECS Module"
    runs-on: ubuntu-latest
    defaults:
      run:
        shell: bash
-       # We keep Terraform files in the terraform directory.
        working-directory: ./terraform
  
    steps:
@@ -98,5 +97,5 @@ jobs:
          go-version: '1.20'
  
      - name: Test
-       run: go test -v ./ecr_test.go
+       run: go test -v ./ecs_test.go
        working-directory: ./test

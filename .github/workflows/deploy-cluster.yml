@@ -1,4 +1,4 @@
-name: "Cluster Deployment"
+name: "Deploy Cluster and app tasks"
  
 on:
   push:

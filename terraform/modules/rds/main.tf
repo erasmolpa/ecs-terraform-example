@@ -11,5 +11,5 @@ resource "aws_db_instance" "golang_serverless_db" {
   username             = var.username
   password             = var.password
   skip_final_snapshot  = var.skip_final_snapshot
-  db_subnet_group_name  = var.subnet_group_name 
+  db_subnet_group_name = var.subnet_group_name
 }
