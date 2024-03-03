@@ -30,28 +30,21 @@ jobs:
        uses: hashicorp/setup-terraform@v2.0.2
     
      - name: Terraform init
-       id: init
        run: terraform init 
        working-directory: ./terraform
 
      - name: Terraform format
-       id: fmt
        run: terraform fmt -check
        working-directory: ./terraform
 
      - name: Terraform validate
-       id: validate
        run: terraform validate
        working-directory: ./terraform
  
      - name: Terraform plan
-       id: plan
-       if: github.event_name == 'pull_request'
        run: terraform plan -var-file=terraform.tfvars -no-color -input=false
-       continue-on-error: true
        working-directory: ./terraform
 
      - name: Terraform apply
-       id: apply
        run: terraform apply -target=module.backend -target=module.aws_ecr_repository -var-file=terraform.tfvars -auto-approve
        working-directory: ./terraform
