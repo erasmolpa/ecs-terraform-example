@@ -1,6 +1,7 @@
 name: Deploy Common Infra
  
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

@@ -1,6 +1,7 @@
 name: "Deploy Cluster and app tasks"
  
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
