@@ -100,4 +100,3 @@ docker tag app:latest public.ecr.aws/c0r3n4u9/app:latestdocker run -p 8888:80 ap
 ```bash
 docker push public.ecr.aws/c0r3n4u9/serverless-go-app:latest
 ```
-
