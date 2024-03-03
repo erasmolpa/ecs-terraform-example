@@ -1,0 +1,29 @@
+name: Deploy to ECR
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'serverless-go-app/Dockerfile'
+      - 'serverless-go-app/main.go'
+
+jobs:
+  publish-serverless-go-app-image-into-ecr-registry-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build and push Docker image
+      env:
+        AWS_REGION: <TU_REGION>
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        $(aws ecr get-login --no-include-email --region $AWS_REGION)
+        docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/serverless-go-app:$GITHUB_SHA serverless-go-app/
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/serverless-go-app:$GITHUB_SHA
