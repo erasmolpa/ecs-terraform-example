@@ -2,6 +2,10 @@ name: Deploy Common Infra
  
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Build an d Publish APP to ECR"]
+    types:
+      - completed
   push:
     branches:
       - main
