@@ -38,7 +38,7 @@ jobs:
            backend "s3" {
              bucket         = "terraform-backend-state-incode-demo"
              key            = "state/resource.tfstate"
-             region         = "us-east-1"
+             region         = "eu-west-1"
              dynamodb_table = "resource-backend-lock"
              profile        = "sre-admin"
            }
