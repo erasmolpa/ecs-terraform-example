@@ -93,6 +93,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
         "awslogs-stream-prefix" = var.ecs_task.container_image_name
       }
     }
+    environment = var.ecs_task.environment
   }])
 }
 resource "aws_ecs_service" "ecs_service" {

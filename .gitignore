@@ -31,4 +31,4 @@ override.tf.json
 # ignoring terragrunt cache files
 .terragrunt-cache
 
-.env
+*.env

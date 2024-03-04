@@ -7,7 +7,7 @@ variable "profile" {
 variable "region" {
   description = "Region for AWS resources"
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-1"
 }
 
 
@@ -22,27 +22,33 @@ variable "aws_ecr_repository" {
 }
 
 variable "aws_ecr_repository_lifecycle_policy_rules" {
-  description = "List of lifecycle policy rules for the repository"
   type = list(object({
-    rule_priority         = number
-    description           = string
-    tag_prefix_list       = list(string)
-    count_type            = string
-    count_number          = number
-    action_type           = string
-    action_type_parameter = string
+    rulePriority = number
+    description  = string
+    selection = object({
+      tagStatus = string
+      # tagPrefixList = list(string)
+      countType   = string
+      countNumber = number
+    })
+    action = object({
+      type = string
+    })
   }))
-  default = [
-    {
-      rule_priority         = 1
-      description           = "keep last 10 images"
-      tag_prefix_list       = []
-      count_type            = "imageCountMoreThan"
-      count_number          = 10
-      action_type           = "expire"
-      action_type_parameter = ""
+  description = "List of ECR lifecycle policies"
+  default = [{
+    action = {
+      type = "expire"
     }
-  ]
+    description  = "example"
+    rulePriority = 1
+    selection = {
+      countNumber = 10
+      # tagPrefixList = []
+      tagStatus = "untagged"
+      countType = "imageCountMoreThan"
+    }
+  }]
 }
 variable "vpc" {
   type = object({
@@ -78,4 +84,52 @@ variable "cloudwatch_log_group_name" {
   description = "Name of the CloudWatch Logs group for container logs"
   type        = string
   default     = "/ecs/my-app"
+}
+
+variable "rds_storage" {
+  type        = number
+  description = "Size of the RDS database in GB"
+}
+variable "rds_db_name" {
+  type        = string
+  description = "Name of the RDS database name"
+}
+
+variable "rds_engine" {
+  type        = string
+  description = "description"
+  validation {
+    condition     = contains(["postgres", "mysql", "aurora-postgresql", "aurora-mysql"], var.rds_engine)
+    error_message = "The following rds_engine are allowed:  postgres,mysql,aurora-postgresql, aurora-mysql"
+  }
+}
+
+variable "instance_class" {
+  type = string
+  validation {
+    condition     = contains(["db.t3.micro", "db.t2.micro"], var.instance_class)
+    error_message = "value"
+  }
+}
+
+variable "username" {
+  type        = string
+  description = "name of the database username"
+}
+
+variable "password" {
+  type        = string
+  description = "password of the database username"
+}
+
+variable "skip_final_snapshot" {
+  type        = bool
+  default     = true
+  description = "skip_final_snapshot"
+}
+
+variable "subnet_group_name" {
+  type        = string
+  default     = ""
+  description = "(Optional) Name of the subnet group"
 }

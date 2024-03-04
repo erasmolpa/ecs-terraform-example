@@ -44,6 +44,17 @@ module "ecs_cluster" {
   name   = var.ecs_cluster["name"]
 }
 
+module "rds_application" {
+  source     = "../terraform/modules/rds"
+  rds_db_name = var.rds_db_name
+  rds_engine = var.rds_engine
+  rds_storage = var.rds_storage
+  instance_class = var.instance_class
+  username = var.username
+  password = var.password
+  skip_final_snapshot = var.skip_final_snapshot
+}
+
 module "ecs_application" {
   source     = "../terraform/modules/ecs_application"
   vpc_id     = module.vpc.vpc_id
@@ -87,7 +98,33 @@ module "ecs_application" {
         "awslogs-region"        = var.region
         "awslogs-stream-prefix" = "ecs"
       }
-    }
+    },
+    environment = [
+      {
+        name = "DB_ADDRESS"
+        value = module.rds_application.db_address
+      },
+      {
+        name = "DB_NAME"
+        value = module.rds_application.db_name
+      },
+      {
+        name = "DB_PORT"
+        value = module.rds_application.db_port
+      },
+      {
+        name = "DB_DRIVER"
+        value = var.rds_engine
+      },
+      {
+        name = "DB_USERNAME"
+        value = var.username
+      },
+      {
+        name = "DB_PASSWORD"
+        value = var.password
+      }
+    ]
   }
 
   ecs_service = {
@@ -101,7 +138,7 @@ module "ecs_application" {
 
   cloudwatch_log_group_name                            = "/ecs/my-app"
   cloudwatch_metric_alarm_name                         = "ecs-app-cpu-utilization"
-  cloudwatch_alarm_actions                             = ["arn:aws:sns:us-east-1:123456789012:my-alerts"]
+  cloudwatch_alarm_actions                             = ["arn:aws:sns:eu-west-1:123456789012:my-alerts"]
   cloudwatch_metric_alarm_cpu_utilization_threshold    = 80
   cloudwatch_metric_alarm_memory_utilization_threshold = 80
 
