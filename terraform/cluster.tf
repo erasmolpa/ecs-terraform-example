@@ -45,13 +45,13 @@ module "ecs_cluster" {
 }
 
 module "rds_application" {
-  source     = "../terraform/modules/rds"
-  rds_db_name = var.rds_db_name
-  rds_engine = var.rds_engine
-  rds_storage = var.rds_storage
-  instance_class = var.instance_class
-  username = var.username
-  password = var.password
+  source              = "../terraform/modules/rds"
+  rds_db_name         = var.rds_db_name
+  rds_engine          = var.rds_engine
+  rds_storage         = var.rds_storage
+  instance_class      = var.instance_class
+  username            = var.username
+  password            = var.password
   skip_final_snapshot = var.skip_final_snapshot
 }
 
@@ -101,27 +101,27 @@ module "ecs_application" {
     },
     environment = [
       {
-        name = "DB_ADDRESS"
+        name  = "DB_ADDRESS"
         value = module.rds_application.db_address
       },
       {
-        name = "DB_NAME"
+        name  = "DB_NAME"
         value = module.rds_application.db_name
       },
       {
-        name = "DB_PORT"
+        name  = "DB_PORT"
         value = module.rds_application.db_port
       },
       {
-        name = "DB_DRIVER"
+        name  = "DB_DRIVER"
         value = var.rds_engine
       },
       {
-        name = "DB_USERNAME"
+        name  = "DB_USERNAME"
         value = var.username
       },
       {
-        name = "DB_PASSWORD"
+        name  = "DB_PASSWORD"
         value = var.password
       }
     ]
