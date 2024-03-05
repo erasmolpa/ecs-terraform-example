@@ -65,4 +65,7 @@ jobs:
 
      - name: Terraform apply
        run: terraform apply -var-file=terraform.tfvars -auto-approve
+       env:
+        TF_VAR_username: ${{ secrets.rds_username }}
+        TF_VAR_password: ${{ secrets.rds_password }}       
        working-directory: ./terraform

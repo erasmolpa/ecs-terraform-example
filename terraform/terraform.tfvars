@@ -52,6 +52,4 @@ rds_storage         = 10
 rds_db_name         = "dbexample"
 rds_engine          = "mysql"
 instance_class      = "db.t2.micro"
-username            = ""
-password            = ""
 skip_final_snapshot = true
