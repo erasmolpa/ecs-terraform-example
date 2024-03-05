@@ -24,7 +24,7 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: "false"
 
       - name: Install pre-commit
         run: pip install pre-commit
