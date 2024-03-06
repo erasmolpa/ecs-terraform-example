@@ -50,8 +50,8 @@ module "rds_application" {
   rds_engine          = var.rds_engine
   rds_storage         = var.rds_storage
   instance_class      = var.instance_class
-  username            = var.username
-  password            = var.password
+  rds_username            = var.rds_username
+  rds_password            = var.rds_password
   skip_final_snapshot = var.skip_final_snapshot
 }
 
@@ -118,11 +118,11 @@ module "ecs_application" {
       },
       {
         name  = "DB_USERNAME"
-        value = var.username
+        value = var.rds_username
       },
       {
         name  = "DB_PASSWORD"
-        value = var.password
+        value = var.rds_password
       }
     ]
   }
