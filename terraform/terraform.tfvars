@@ -1,4 +1,4 @@
-profile = "sre-admin"
+profile = "cqs-sre"
 region  = "eu-west-1"
 
 backend = {
@@ -17,11 +17,25 @@ aws_ecr_repository_lifecycle_policy_rules = [{
   description  = "Retain at least 3 images and images younger than 180 days"
   rulePriority = 1
   selection = {
-    countNumber = 10
-    # tagPrefixList = []
-    tagStatus = "any"
-    countType = "imageCountMoreThan"
+    countNumber   = 10
+    tagPrefixList = [""]
+    tagStatus     = "any"
+    countType     = "imageCountMoreThan"
   }
+  },
+  {
+    action = {
+      type = "expire"
+    }
+    description  = "Expire images older than 14 days"
+    rulePriority = 2
+    selection = {
+      countNumber   = 10
+      tagPrefixList = [""]
+      tagStatus     = "any"
+      countType     = "sinceImagePushed"
+      countUnit     = "days"
+    }
 }]
 
 vpc = {

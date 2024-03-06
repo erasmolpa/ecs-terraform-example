@@ -26,10 +26,11 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     rulePriority = number
     description  = string
     selection = object({
-      tagStatus = string
-      # tagPrefixList = list(string)
-      countType   = string
-      countNumber = number
+      tagStatus     = string
+      tagPrefixList = optional(list(string))
+      countType     = string
+      countUnit     = optional(string)
+      countNumber   = number
     })
     action = object({
       type = string
@@ -43,12 +44,14 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     description  = "example"
     rulePriority = 1
     selection = {
-      countNumber = 10
-      # tagPrefixList = []
-      tagStatus = "untagged"
-      countType = "imageCountMoreThan"
+      countNumber   = 10
+      tagPrefixList = [""]
+      tagStatus     = "untagged"
+      countUnit     = "days",      
+      countType     = "imageCountMoreThan"
     }
-  }]
+    }
+  ]
 }
 variable "vpc" {
   type = object({
