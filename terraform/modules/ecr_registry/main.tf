@@ -6,15 +6,15 @@ resource "aws_ecr_repository" "ecr_repository" {
 
 resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
   repository = aws_ecr_repository.ecr_repository.name
-  for_each = { for idx, policy in var.lifecycle_policy_rules : idx => policy }
+  for_each   = { for idx, policy in var.lifecycle_policy_rules : idx => policy }
   policy = jsonencode({
     "rules" = [{
       "rulePriority" = 1
       "description"  = each.value.description
       "selection" = {
-        "tagStatus"     = each.value.selection.tagStatus
-        "countType"     = each.value.selection.countType
-        "countNumber"   = each.value.selection.countNumber
+        "tagStatus"   = each.value.selection.tagStatus
+        "countType"   = each.value.selection.countType
+        "countNumber" = each.value.selection.countNumber
       }
       "action" = {
         "type" = each.value.action.type

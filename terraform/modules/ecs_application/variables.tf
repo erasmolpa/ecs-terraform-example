@@ -31,8 +31,8 @@ variable "ecs_task" {
     requires_compatibilities = list(string)
     network_mode             = string
     container_image_port     = number
-    environment         = list(object({
-      name = string
+    environment = list(object({
+      name  = string
       value = string
     }))
   })

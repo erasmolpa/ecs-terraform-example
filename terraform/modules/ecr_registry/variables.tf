@@ -15,10 +15,10 @@ variable "lifecycle_policy_rules" {
     rulePriority = number
     description  = string
     selection = object({
-      tagStatus     = string
+      tagStatus = string
       # tagPrefixList = list(string)
-      countType     = string
-      countNumber   = number
+      countType   = string
+      countNumber = number
     })
     action = object({
       type = string
@@ -29,7 +29,7 @@ variable "lifecycle_policy_rules" {
     action = {
       type = "expire"
     }
-    description = "example"
+    description  = "example"
     rulePriority = 1
     selection = {
       countNumber = 10

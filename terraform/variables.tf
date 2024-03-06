@@ -114,13 +114,13 @@ variable "instance_class" {
 
 variable "rds_username" {
   type        = string
-  sensitive = true
+  sensitive   = true
   description = "name of the database username"
 }
 
 variable "rds_password" {
   type        = string
-  sensitive = true
+  sensitive   = true
   description = "password of the database username"
 }
 
