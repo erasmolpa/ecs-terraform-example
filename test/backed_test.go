@@ -38,8 +38,3 @@ func TestTerraformBackendExample(t *testing.T) {
 	require.Equal(t, "test-lock", dynamodb_table_name)
 	require.Equal(t, fmt.Sprintf("%s-tf-learn", bucketName), backend_bucket_name)
 }
-
-func cleanupS3Bucket(t *testing.T, awsRegion string, bucketName string) {
-	aws.EmptyS3Bucket(t, awsRegion, bucketName)
-	aws.DeleteS3Bucket(t, awsRegion, bucketName)
-}

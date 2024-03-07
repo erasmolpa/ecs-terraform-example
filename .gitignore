@@ -32,3 +32,5 @@ override.tf.json
 .terragrunt-cache
 
 *.env
+
+sensitive.tfvars

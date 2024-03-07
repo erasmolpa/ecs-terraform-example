@@ -8,8 +8,8 @@ resource "aws_db_instance" "golang_serverless_db" {
   engine               = var.rds_engine
   engine_version       = data.aws_rds_engine_version.engine_version.version_actual
   instance_class       = var.instance_class
-  username             = var.username
-  password             = var.password
+  username             = var.rds_username
+  password             = var.rds_password
   skip_final_snapshot  = var.skip_final_snapshot
   db_subnet_group_name = var.subnet_group_name
 }

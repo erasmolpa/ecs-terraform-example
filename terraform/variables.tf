@@ -22,19 +22,20 @@ variable "aws_ecr_repository" {
 }
 
 variable "aws_ecr_repository_lifecycle_policy_rules" {
-  type = list(object({
-    rulePriority = number
-    description  = string
-    selection = object({
-      tagStatus = string
-      # tagPrefixList = list(string)
-      countType   = string
-      countNumber = number
-    })
-    action = object({
-      type = string
-    })
-  }))
+  # type = list(object({
+  #   rulePriority = number
+  #   description  = string
+  #   selection = object({
+  #     tagStatus     = string
+  #     tagPrefixList = optional(list(string), [""])
+  #     countType     = string
+  #     countUnit     = optional(string,"days")
+  #     countNumber   = number
+  #   })
+  #   action = object({
+  #     type = string
+  #   })
+  # }))
   description = "List of ECR lifecycle policies"
   default = [{
     action = {
@@ -43,12 +44,14 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
     description  = "example"
     rulePriority = 1
     selection = {
-      countNumber = 10
-      # tagPrefixList = []
-      tagStatus = "untagged"
-      countType = "imageCountMoreThan"
+      countNumber   = 10
+      tagPrefixList = [""]
+      tagStatus     = "untagged"
+      countUnit     = "days",
+      countType     = "imageCountMoreThan"
     }
-  }]
+    }
+  ]
 }
 variable "vpc" {
   type = object({
@@ -112,13 +115,15 @@ variable "instance_class" {
   }
 }
 
-variable "username" {
+variable "rds_username" {
   type        = string
+  sensitive   = true
   description = "name of the database username"
 }
 
-variable "password" {
+variable "rds_password" {
   type        = string
+  sensitive   = true
   description = "password of the database username"
 }
 

@@ -11,31 +11,32 @@ variable "image_tag_mutability" {
 }
 
 variable "lifecycle_policy_rules" {
-  type = list(object({
-    rulePriority = number
-    description  = string
-    selection = object({
-      tagStatus     = string
-      # tagPrefixList = list(string)
-      countType     = string
-      countNumber   = number
-    })
-    action = object({
-      type = string
-    })
-  }))
+  # type = list(object({
+  #   rulePriority = number
+  #   description  = string
+  #   selection = object({
+  #     tagStatus     = string
+  #     tagPrefixList = optional(list(string), [""])
+  #     countType     = string
+  #     countUnit     = optional(string,"days")
+  #     countNumber   = number
+  #   })
+  #   action = object({
+  #     type = string
+  #   })
+  # }))
   description = "List of ECR lifecycle policies"
   default = [{
     action = {
       type = "expire"
     }
-    description = "example"
+    description  = "example"
     rulePriority = 1
     selection = {
-      countNumber = 10
-      # tagPrefixList = []
-      tagStatus = "untagged"
-      countType = "imageCountMoreThan"
+      countNumber   = 10
+      tagStatus     = "untagged"
+      countType     = "imageCountMoreThan"
     }
-  }]
+    }
+  ]
 }

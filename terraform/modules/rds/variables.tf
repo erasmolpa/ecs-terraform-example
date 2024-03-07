@@ -24,13 +24,15 @@ variable "instance_class" {
   }
 }
 
-variable "username" {
+variable "rds_username" {
   type        = string
+  sensitive   = true
   description = "name of the database username"
 }
 
-variable "password" {
+variable "rds_password" {
   type        = string
+  sensitive   = true
   description = "password of the database username"
 }
 
