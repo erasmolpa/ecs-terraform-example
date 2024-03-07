@@ -26,8 +26,8 @@ func TestTerrafortmRdsCreation(t *testing.T) {
 			"rds_db_name":         databaseName,
 			"rds_engine":          "mysql",
 			"instance_class":      "db.t2.micro",
-			"username":            username,
-			"password":            password,
+			"rds_username":        username,
+			"rds_password":        password,
 			"skip_final_snapshot": true,
 		},
 	})

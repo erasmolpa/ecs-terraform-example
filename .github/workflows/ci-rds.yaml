@@ -45,13 +45,30 @@ jobs:
         run: terraform plan -out=tfplan    
         env:
           TF_VAR_rds_storage: 10
-          TF_VAR_db_name: 'ecs_challege_rds'
+          TF_VAR_rds_db_name: 'ecs_challege_rds'
           TF_VAR_rds_engine: 'aurora-mysql'
           TF_VAR_instance_class: db.t3.micro
           TF_VAR_rds_username: ${{ secrets.rds_username }}
           TF_VAR_rds_password: ${{ secrets.rds_password }}
         working-directory: terraform/modules/rds
 
+  run-tf-rds-test:
+    needs: "build-terraform-plan"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CQS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CQS }}
+          aws-region: eu-west-1
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'    
       - name: Test
         run: go test -v ./rds_test.go
-        working-directory: ./test      
+        working-directory: ./test  
