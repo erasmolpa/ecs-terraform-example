@@ -22,20 +22,20 @@ variable "aws_ecr_repository" {
 }
 
 variable "aws_ecr_repository_lifecycle_policy_rules" {
-  type = list(object({
-    rulePriority = number
-    description  = string
-    selection = object({
-      tagStatus     = string
-      tagPrefixList = optional(list(string))
-      countType     = string
-      countUnit     = optional(string)
-      countNumber   = number
-    })
-    action = object({
-      type = string
-    })
-  }))
+  # type = list(object({
+  #   rulePriority = number
+  #   description  = string
+  #   selection = object({
+  #     tagStatus     = string
+  #     tagPrefixList = optional(list(string), [""])
+  #     countType     = string
+  #     countUnit     = optional(string,"days")
+  #     countNumber   = number
+  #   })
+  #   action = object({
+  #     type = string
+  #   })
+  # }))
   description = "List of ECR lifecycle policies"
   default = [{
     action = {
@@ -47,7 +47,7 @@ variable "aws_ecr_repository_lifecycle_policy_rules" {
       countNumber   = 10
       tagPrefixList = [""]
       tagStatus     = "untagged"
-      countUnit     = "days",      
+      countUnit     = "days",
       countType     = "imageCountMoreThan"
     }
     }

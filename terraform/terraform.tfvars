@@ -14,12 +14,12 @@ aws_ecr_repository_lifecycle_policy_rules = [{
   action = {
     type = "expire"
   }
-  description  = "Retain at least 3 images and images younger than 180 days"
+  description  = "Keep last 30 images"
   rulePriority = 1
   selection = {
-    countNumber   = 10
-    tagPrefixList = [""]
-    tagStatus     = "any"
+    countNumber   = 30
+    tagPrefixList = ["v"]
+    tagStatus     = "tagged"
     countType     = "imageCountMoreThan"
   }
   },
@@ -30,11 +30,10 @@ aws_ecr_repository_lifecycle_policy_rules = [{
     description  = "Expire images older than 14 days"
     rulePriority = 2
     selection = {
-      countNumber   = 10
-      tagPrefixList = [""]
-      tagStatus     = "any"
-      countType     = "sinceImagePushed"
-      countUnit     = "days"
+      countNumber = 14
+      tagStatus   = "untagged"
+      countType   = "sinceImagePushed"
+      countUnit   = "days"
     }
 }]
 
