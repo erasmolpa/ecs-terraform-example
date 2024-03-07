@@ -34,9 +34,7 @@ variable "lifecycle_policy_rules" {
     rulePriority = 1
     selection = {
       countNumber   = 10
-      tagPrefixList = [""]
       tagStatus     = "untagged"
-      countUnit     = "days",
       countType     = "imageCountMoreThan"
     }
     }
