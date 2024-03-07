@@ -45,7 +45,7 @@ jobs:
         run: terraform plan -out=tfplan    
         env:
           TF_VAR_rds_storage: 10
-          TF_VAR_db_name: 'ecs_challege_rds'
+          TF_VAR_rds_db_name: 'ecs_challege_rds'
           TF_VAR_rds_engine: 'aurora-mysql'
           TF_VAR_instance_class: db.t3.micro
           TF_VAR_rds_username: ${{ secrets.rds_username }}
