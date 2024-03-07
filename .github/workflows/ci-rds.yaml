@@ -7,6 +7,7 @@ on:
       - "*"
     paths:
       - "terraform/modules/rds"
+      - "test/rds_test.go"
   pull_request:
     types: [opened, reopened]
     branches:
@@ -49,3 +50,7 @@ jobs:
           TF_VAR_username: ${{ secrets.rds_username }}
           TF_VAR_password: ${{ secrets.rds_password }}
         working-directory: terraform/modules/rds
+
+      - name: Test
+        run: go test -v ./rds_test.go
+        working-directory: ./test      
